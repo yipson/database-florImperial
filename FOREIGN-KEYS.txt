@@ -10,7 +10,7 @@ FOREIGN KEYS
 
 ALTER TABLE persPersona
 ADD CONSTRAINT FK_persPersona_persTipoDoc
-FOREIGN KEY (id_tipo_doc ) REFERENCES persTipoDoc(id_tipo_doc)
+FOREIGN KEY (id_tipo_doc) REFERENCES persTipoDoc(id_tipo_doc)
 
 
 ALTER TABLE persPersona
@@ -26,6 +26,16 @@ FOREIGN KEY (id_tipo_rh) REFERENCES persTipoRh(id_tipo_rh)
 ALTER TABLE persPersona
 ADD CONSTRAINT FK_persPersona_ubicCiudad
 FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad)
+
+
+ALTER TABLE persContacto
+ADD CONSTRAINT FK_persContacto_persPersona
+FOREIGN KEY (pers_id) REFERENCES persPersona(pers_id)
+
+
+ALTER TABLE persContacto
+ADD CONSTRAINT FK_persContacto_persTipoContacto
+FOREIGN KEY (id_tipo_contacto ) REFERENCES persTipoContacto(id_tipo_contacto)
 
 
 ALTER TABLE persUsuario
@@ -79,6 +89,16 @@ FOREIGN KEY (id_evento) REFERENCES servEvento(id_evento)
 
 
 ALTER TABLE servServicio
+ADD CONSTRAINT FK_servServicio_persUsuario_creaServicio
+FOREIGN KEY (id_usua_crea_serv) REFERENCES persUsuario(id_usuario)
+
+
+ALTER TABLE servServicio
+ADD CONSTRAINT FK_servServicio_persUsuario_modServicio
+FOREIGN KEY (id_usua_mod_serv) REFERENCES persUsuario(id_usuario)
+
+
+ALTER TABLE servServicio
 ADD CONSTRAINT FK_servServicio_vtasVenta
 FOREIGN KEY (id_transaccion) REFERENCES vtasVenta(id_transaccion)
 
@@ -104,25 +124,53 @@ FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad)
 
 
 ALTER TABLE vtasVenta
-ADD CONSTRAINT FK_vtasVenta_vtasMedioPago
-FOREIGN KEY (id_medpag) REFERENCES vtasMedioPago(id_medpag)
+ADD CONSTRAINT FK_vtasVenta_prodLote
+FOREIGN KEY (id_lote) REFERENCES prodLote(id_lote)
 
 
+ALTER TABLE vtasDetalleVenta
+ADD CONSTRAINT FK_vtasDetalleVenta_vtasVenta
+FOREIGN KEY (id_venta) REFERENCES vtasVenta(id_transaccion)
 
 
+ALTER TABLE vtasDetalleVenta
+ADD CONSTRAINT FK_vtasDetalleVenta_prodProducto
+FOREIGN KEY (id_producto) REFERENCES prodProducto(id_producto)
 
 
+ALTER TABLE vtasPuntoVenta
+ADD CONSTRAINT FK_vtasPuntoVenta_ubicLocacion
+FOREIGN KEY (id_locac) REFERENCES ubicLocacion(id_locac)
 
 
+ALTER TABLE prodFloricultora
+ADD CONSTRAINT FK_prodFloricultora_ubicLocacion
+FOREIGN KEY (id_locac) REFERENCES ubicLocacion(id_locac)
 
 
+ALTER TABLE prodLote
+ADD CONSTRAINT FK_prodLote_prodFloricultora
+FOREIGN KEY (id_floricultora) REFERENCES prodFloricultora(id_floricultora)
 
 
+ALTER TABLE prodDetalleTraslado
+ADD CONSTRAINT FK_prodDetalleTraslado_prodTrasladoAPuntoVenta
+FOREIGN KEY (id_tras_a_punto_venta) REFERENCES prodTrasladoAPuntoVenta(id_tras_a_punto_venta)
 
 
+ALTER TABLE prodDetalleTraslado
+ADD CONSTRAINT FK_prodDetalleTraslado_prodProducto
+FOREIGN KEY (id_producto) REFERENCES prodProducto(id_producto)
 
 
+ALTER TABLE beneBeneficioPersona
+ADD CONSTRAINT FK_beneBeneficioPersona_beneBeneficio
+FOREIGN KEY (id_beneficio) REFERENCES beneBeneficio(id_beneficio)
 
+
+ALTER TABLE beneBeneficioPersona
+ADD CONSTRAINT FK_beneBeneficioPersona_persPersona
+FOREIGN KEY (pers_id) REFERENCES persPersona(pers_id)
 
 
 

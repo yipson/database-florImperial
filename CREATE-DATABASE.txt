@@ -16,8 +16,6 @@ CREATE TABLE persPersona (
 	id_genero char(1) not null,
 	id_tipo_rh smallint not null,
 	fec_nacim date not null,
-	tel_fijo char(15),
-	tel_movil char(15),
 	dir_residencia nvarchar(80) not null,
 	nom_barrio varchar(30) not null,
 	id_ciudad char(4) not null,
@@ -27,6 +25,21 @@ CREATE TABLE persPersona (
 	fec_mod datetime,
 	pers_estado char(1) not null,
 	CONSTRAINT PK_persPersona PRIMARY KEY (pers_id)
+);
+
+
+CREATE TABLE persContacto(
+	pers_id int not null,
+	contacto char(15) not null,
+	id_tipo_contacto int not null,
+	CONSTRAINT PK_persContacto PRIMARY KEY (pers_id,contacto)
+);
+
+
+CREATE TABLE persTipoContacto(
+	id_tipo_contacto int IDENTITY(1,1) not null,
+	descripcion char(30) not null,
+	CONSTRAINT PK_persTipoContacto PRIMARY KEY (id_tipo_contacto)
 );
 
 
@@ -143,9 +156,9 @@ CREATE TABLE servServicio (
 	nom_servicio nvarchar(80) not null,
 	desc_servicio varchar(150) not null,
 	fec_crea_serv datetime not null,
-	usua_crea_serv char(15) not null,
+	id_usua_crea_serv bigint not null,
 	fec_mod_serv datetime,
-	usua_mod_serv char(15),
+	id_usua_mod_serv bigint,
 	id_ciudad char(4),
 	vig_serv char(1) not null,
 	id_evento char(3),
@@ -193,6 +206,7 @@ CREATE TABLE paraParametro (
 CREATE TABLE vtasVenta (
 	id_transaccion int IDENTITY(1,1) not null,
 	fec_trans datetime not null,
+	id_lote int,
 	usua_trans char(15) not null,
 	num_factura int,
 	usua_venta char(15) not null,
@@ -214,6 +228,86 @@ CREATE TABLE vtasMedioPago (
 );
 
 
+CREATE TABLE vtasDetalleVenta(
+	id_detalle_venta bigint IDENTITY(1,1) not null,
+	id_venta int not null,
+	id_producto int not null,
+	valor_unitario money not null,
+	cantidad int not null,
+	total money not null,
+	CONSTRAINT PK_vtaDetalleVenta PRIMARY KEY(id_detalle_venta)
+);
+
+
+CREATE TABLE prodProducto(
+	id_producto int IDENTITY(1,1) not null,
+	descripcion nvarchar(80) not null,
+	precio money not null,
+	codigo char(30) not null,
+	CONSTRAINT PK_prodProducto PRIMARY KEY(id_producto)
+);
+
+
+CREATE TABLE prodFloricultora(
+	id_floricultora int IDENTITY(1,1) not null,
+	nombre varchar(50) not null,
+	id_locac smallint not null,
+	CONSTRAINT PK_prodFloricultora PRIMARY KEY(id_floricultora)
+);
+
+
+CREATE TABLE prodLote(
+	id_lote int IDENTITY(1,1) not null,
+	codigo char(30) not null,
+	id_floricultora int not null,
+	CONSTRAINT PK_prodLote PRIMARY KEY(id_lote)
+);
+
+
+CREATE TABLE prodTrasladoAPuntoVenta(
+	id_tras_a_punto_venta int IDENTITY(1,1) not null,
+	fec_traslado datetime not null,
+	id_lote int,
+	codigo char(30) not null,
+	id_punto_venta int not null,
+	CONSTRAINT PK_prodTrasladoAPuntoVenta PRIMARY KEY (id_tras_a_punto_venta)
+);
+
+
+CREATE TABLE prodDetalleTraslado(
+	id_detalle_traslado bigint IDENTITY(1,1) not null,
+	id_tras_a_punto_venta int not null,
+	id_producto int not null,
+	valor_unitario money not null,
+	cantidad int not null,
+	total money not null,
+	CONSTRAINT PK_prodDetalleTraslado PRIMARY KEY(id_detalle_traslado)
+);
+
+
+CREATE TABLE vtasPuntoVenta(
+	id_punto_venta int IDENTITY(1,1) not null,
+	nombre varchar(50) not null,
+	id_locac smallint not null,
+	CONSTRAINT PK_vtasPuntoVenta PRIMARY KEY(id_punto_venta)
+);
+
+
+CREATE TABLE beneBeneficio(
+	id_beneficio int IDENTITY(1,1) not null,
+	descripcion varchar(60) not null,
+	CONSTRAINT PK_beneBeneficio PRIMARY KEY(id_beneficio)
+);
+
+
+CREATE TABLE beneBeneficioPersona(
+	id_benef_persona int IDENTITY(1,1) not null,
+	id_beneficio int not null,
+	pers_id int not null,
+	parentesco char(20),
+	CONSTRAINT PK_beneBeneficioPersona PRIMARY KEY(id_benef_persona)
+);
+
 
 ________________________________________________________________
 el campo id_usuario se cambia de char a bigint ya que
@@ -233,4 +327,32 @@ los id que son de tipo char y no concordaban entre la longitud de
 la llave primaria y la foranea, se estandarizaron
 
 el campo id_servicio de la tabla servEvento, debe ir?
+
+se eliminan los campos tel_fijo y tel movil de la tabla persPersona
+y se centralizan los numeros de contacto en una tabla independiente
+al igual que el tipo de numero de contacto en otra tabla
+
+se cambian los campos usua_crea_serv y usua_mod_serv por
+id_usua_crea_serv y id_usua_mod_serv para que la informacion sea tomada
+de la tabla de persUsuario
+
+se crea tabla vtasPuntoVenta
+
+se crea tabla vtasDetalleVenta
+
+se crea tabla prodProducto
+
+se crea tabla prodFloricultora
+
+se crea tabla prodLote
+
+se agrega campo id_lote a la tabla vtasVenta
+
+se crea tabla prodTrasladoAPuntoVenta
+
+se crea tabla prodDetalleTraslado
+
+se crea tabla beneBeneficio
+
+se crea tabla beneBeneficioPersona
 
