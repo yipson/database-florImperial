@@ -1,0 +1,236 @@
+DATA TYPE https://docs.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver15
+
+
+CREATE DATABASE florImperialDB;
+
+
+CREATE TABLE persPersona (
+	pers_id int IDENTITY(1,1) not null,
+	id_tipo_doc smallint not null,
+	num_doc char(28) not null,
+	fec_exp_doc date not null,
+	pri_nombre nvarchar(50) not null,
+	seg_nombre varchar(50),
+	pri_apell nvarchar(50) not null,
+	seg_apell varchar(50),
+	id_genero char(1) not null,
+	id_tipo_rh smallint not null,
+	fec_nacim date not null,
+	tel_fijo char(15),
+	tel_movil char(15),
+	dir_residencia nvarchar(80) not null,
+	nom_barrio varchar(30) not null,
+	id_ciudad char(4) not null,
+	usua_crea char(15) not null,
+	fec_crea datetime not null,
+	usua_mod char(15),
+	fec_mod datetime,
+	pers_estado char(1) not null,
+	CONSTRAINT PK_persPersona PRIMARY KEY (pers_id)
+);
+
+
+CREATE TABLE persUsuario(
+	id_usuario bigint IDENTITY(1,1) not null,
+	contrasena char(20) not null,
+	pers_id int not null,
+	fec_vigusr date not null,
+	act_usr char(1) not null,
+	CONSTRAINT PK_persUsuario PRIMARY KEY(id_usuario)
+);
+
+
+CREATE TABLE persRol (
+	id_rol char(2) not null,
+	desc_rol varchar(50) not null,
+	fec_crearol datetime not null,
+	usua_crearol char(15) not null,
+	fec_modrol datetime ,
+	usua_modrol char(1),
+	vig_rol char(1) not null,
+	CONSTRAINT PK_persRol PRIMARY KEY (id_rol)
+);
+
+
+CREATE TABLE persAsoRol (
+	pers_id int IDENTITY(1,1) not null,
+	id_rol char(2) not null,
+	fec_asigrol datetime not null,
+	usua_asigrol char(15) not null,
+	fec_modrol datetime,
+	usua_modrol char(15),
+	rol_active bit not null,
+	CONSTRAINT PK_persAsoRol PRIMARY KEY(pers_id,id_rol)
+);
+
+
+CREATE TABLE persTipoDoc (
+	id_tipo_doc smallint not null,
+	abr_tipo_doc char(3) not null,
+	des_doc char(20) not null,
+	vig_doc char(1) not null,
+	CONSTRAINT PK_persTipoDoc PRIMARY KEY (id_tipo_doc)
+);
+
+
+CREATE TABLE persGenero (
+	id_genero char(1) not null,
+	desc_genero char(15),
+	CONSTRAINT PK_persGenero PRIMARY KEY(id_genero)
+);
+
+
+CREATE TABLE persTipoRh (
+	id_tipo_rh smallint IDENTITY(1,1) not null,
+	tipo_rh char(3),
+	CONSTRAINT PK_persTipoRh PRIMARY KEY(id_tipo_rh)
+);
+
+
+CREATE TABLE persSolicitud(
+	id_solicitud int IDENTITY(1,1) not null,
+	pers_id int not null,
+	tipo_solicitud char(3) not null,
+	asunto_solicitud varchar(50) not null,
+	texto_solicitud varchar(2000) not null,
+	usua_asig_sol char(15) not null,
+	fec_crea_sol datetime not null,
+	fec_asig_sol datetime not null,
+	CONSTRAINT PK_persSolicitud PRIMARY KEY(id_solicitud)
+);
+
+
+CREATE TABLE ubicCiudad (
+	id_ciudad char(4) not null,
+	nom_ciudad varchar(50) not null,
+	id_depto char(4) not null,
+	CONSTRAINT PK_ubicCiudad PRIMARY KEY(id_ciudad)
+);
+
+
+CREATE TABLE ubicLocacion (
+	id_locac smallint IDENTITY(1,1) not null,
+	nom_locac varchar(50) not null,
+	dir_locac varchar(150) not null,
+	tel_fijo char(15),
+	usua_ger_locac char(50) not null,
+	id_ciudad char(4) not null,
+	vig_locac char(1) not null,
+	CONSTRAINT PK_ubicLocacion PRIMARY KEY (id_locac)
+);
+
+
+CREATE TABLE ubicDepart(
+	id_depto char(4) not null,
+	nom_depto varchar(50) not null,
+	id_pais char(3) not null
+	CONSTRAINT PK_ubicDepto PRIMARY KEY(id_depto)
+);
+
+
+CREATE TABLE ubicPais (
+	id_pais char(3) not null,
+	desc_pais nvarchar(50) not null,
+	vig_reg char(1) not null
+	CONSTRAINT PK_ubicPais PRIMARY KEY(id_pais)
+);
+
+
+
+CREATE TABLE servServicio (
+	id_servicio int IDENTITY(1,1) not null,
+	id_tip_servicio char(3) not null,
+	nom_servicio nvarchar(80) not null,
+	desc_servicio varchar(150) not null,
+	fec_crea_serv datetime not null,
+	usua_crea_serv char(15) not null,
+	fec_mod_serv datetime,
+	usua_mod_serv char(15),
+	id_ciudad char(4),
+	vig_serv char(1) not null,
+	id_evento char(3),
+	id_transaccion int
+	CONSTRAINT PK_servServicio PRIMARY KEY(id_servicio)
+);
+
+
+
+CREATE TABLE servTarifa (
+	id_tarifa int IDENTITY(1,1) not null,
+	id_servicio int not null,
+	id_param char(3) not null,
+	porcen_pparam smallint not null,
+	CONSTRAINT PK_servTarifa PRIMARY KEY(id_tarifa)
+);
+
+
+CREATE TABLE servEvento (
+	id_evento char(3) not null,
+	desc_evento varchar(50) not null,
+	id_servicio int not null
+	CONSTRAINT PK_servEvento PRIMARY KEY (id_evento)
+);
+
+
+CREATE TABLE servTipoServicio (
+	id_tip_servicio char(3) not null,
+	desc_tip_servicio varchar(50) not null,
+	vig_tip_servicio char(1) not null,
+	CONSTRAINT PK_servTipoServicio PRIMARY KEY (id_tip_servicio)
+);
+
+
+CREATE TABLE paraParametro (
+	id_param char(3) not null,
+	desc_param nvarchar(50) not null,
+	ano_vigencia smallint not null,
+	val_param char(20) not null,
+	vig_param char(1) not null,
+	CONSTRAINT PK_paraParametro PRIMARY KEY(id_param)
+);
+
+
+CREATE TABLE vtasVenta (
+	id_transaccion int IDENTITY(1,1) not null,
+	fec_trans datetime not null,
+	usua_trans char(15) not null,
+	num_factura int,
+	usua_venta char(15) not null,
+	id_servicio int not null,
+	val_neto money not null,
+	val_iva money not null,
+	id_medpag char(2) not null,
+	pers_id int not null,
+	id_ciudad char(4) not null,
+	CONSTRAINT PK_vtasVentas PRIMARY KEY (id_transaccion)
+);
+
+
+CREATE TABLE vtasMedioPago (
+	id_medpag char(2) not null,
+	desc_medpag nvarchar(50) not null,
+	vig_medpag char(1) not null,
+	CONSTRAINT PK_vtaMedioPago PRIMARY KEY(id_medpag)
+);
+
+
+
+________________________________________________________________
+el campo id_usuario se cambia de char a bigint ya que
+es una tabla que puede tender a crecer de manera muy rapida
+y los id serian mas faciles de manejar si se asignan de forma
+automatica con identity, esto tambien para su llave foranea 
+en
+
+en la tabla persAsoRol, el campo rol_active lo cambiamos de
+char(1) a bit ya que solo puede tener dos estados,
+true o false
+
+se omite el campo id_depto en la tabla ubicPais ya que un pais
+no pertenece a un departamento
+
+los id que son de tipo char y no concordaban entre la longitud de
+la llave primaria y la foranea, se estandarizaron
+
+el campo id_servicio de la tabla servEvento, debe ir?
+

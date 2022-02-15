@@ -1,0 +1,138 @@
+________________________________________________________________
+Ejemplo foreign key
+
+ALTER TABLE Orders
+ADD CONSTRAINT FK_PersonOrder
+FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+_______________________________________________________________
+FOREIGN KEYS
+
+
+ALTER TABLE persPersona
+ADD CONSTRAINT FK_persPersona_persTipoDoc
+FOREIGN KEY (id_tipo_doc ) REFERENCES persTipoDoc(id_tipo_doc)
+
+
+ALTER TABLE persPersona
+ADD CONSTRAINT FK_persPersona_persGenero
+FOREIGN KEY (id_genero) REFERENCES persGenero(id_genero)
+
+
+ALTER TABLE persPersona
+ADD CONSTRAINT FK_persPersona_persTipoRh
+FOREIGN KEY (id_tipo_rh) REFERENCES persTipoRh(id_tipo_rh)
+
+
+ALTER TABLE persPersona
+ADD CONSTRAINT FK_persPersona_ubicCiudad
+FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad)
+
+
+ALTER TABLE persUsuario
+ADD CONSTRAINT FK_persUsuario_persPersona
+FOREIGN KEY (pers_id) REFERENCES persPersona(pers_id)
+
+
+ALTER TABLE persAsoRol
+ADD CONSTRAINT FK_persAsoRol_persRol
+FOREIGN KEY (id_rol) REFERENCES persRol(id_rol)
+
+
+ALTER TABLE persSolicitud
+ADD CONSTRAINT FK_persSolicitud_persPersona
+FOREIGN KEY (pers_id) REFERENCES persPersona(pers_id)
+
+
+ALTER TABLE ubicCiudad
+ADD CONSTRAINT FK_ubicCiudad_ubicDepart
+FOREIGN KEY (id_depto) REFERENCES ubicDepart(id_depto)
+
+
+ALTER TABLE ubicDepart
+ADD CONSTRAINT FK_ubicDepart_ubicPais
+FOREIGN KEY (id_pais) REFERENCES ubicPais(id_pais)
+
+
+ALTER TABLE ubicLocacion
+ADD CONSTRAINT FK_ubicLocacion_ubicCiudad
+FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad)
+
+
+ALTER TABLE vtasVenta
+ADD CONSTRAINT FK_vtasVenta_vtasMedioPago
+FOREIGN KEY (id_medpag) REFERENCES vtasMedioPago(id_medpag)
+
+
+ALTER TABLE servServicio
+ADD CONSTRAINT FK_servServicio_servTipoServ
+FOREIGN KEY (id_tip_servicio) REFERENCES servTipoServicio(id_tip_servicio)
+
+
+ALTER TABLE servServicio
+ADD CONSTRAINT FK_servServicio_ubicCiudad
+FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad)
+
+
+ALTER TABLE servServicio
+ADD CONSTRAINT FK_servServicio_servEvento
+FOREIGN KEY (id_evento) REFERENCES servEvento(id_evento)
+
+
+ALTER TABLE servServicio
+ADD CONSTRAINT FK_servServicio_vtasVenta
+FOREIGN KEY (id_transaccion) REFERENCES vtasVenta(id_transaccion)
+
+
+ALTER TABLE servTarifa
+ADD CONSTRAINT FK_servTarifa_paraParametro
+FOREIGN KEY (id_param) REFERENCES paraParametro(id_param)
+
+
+ALTER TABLE servTarifa
+ADD CONSTRAINT FK_servTarifa_servServicio
+FOREIGN KEY (id_servicio) REFERENCES servServicio(id_servicio)
+
+
+ALTER TABLE vtasVenta
+ADD CONSTRAINT FK_vtasVenta_persPersona
+FOREIGN KEY (pers_id) REFERENCES persPersona(pers_id)
+
+
+ALTER TABLE vtasVenta
+ADD CONSTRAINT FK_vtasVenta_ubicCiudad
+FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad)
+
+
+ALTER TABLE vtasVenta
+ADD CONSTRAINT FK_vtasVenta_vtasMedioPago
+FOREIGN KEY (id_medpag) REFERENCES vtasMedioPago(id_medpag)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
