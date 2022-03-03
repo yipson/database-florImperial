@@ -91,6 +91,22 @@ CREATE TABLE persGenero (
 );
 
 
+CREATE TABLE persNatPers (
+	id_tip_nat_pers char(1) not null,
+	desc_tipo_pers char(20) not null,
+	tipo_act char(1) not null,
+	CONSTRAINT PK_PersNatPers PRIMARY KEY(id_tip_nat_pers)
+);
+
+
+CREATE TABLE persTipoDoc (
+	id_tip_doc tinyint IDENTITY(1,1) not null,
+	abr_tip_doc char(3) not null,
+	desc_tip_doc char(25) not null,
+	ind_tip_act char(1) not null,
+	CONSTRAINT PK_PersTipoDoc PRIMARY KEY(id_tip_doc)
+);
+
 
 -- UBICACION ---------------------------------------------------------
 
