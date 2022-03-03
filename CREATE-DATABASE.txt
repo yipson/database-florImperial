@@ -6,7 +6,7 @@ CREATE DATABASE florImperialDB;
 
 -- USER ---------------------------------------------------------------
 
-CREATE TABLE userAsRol (
+CREATE TABLE userAsoRol (
 	id_user bigint IDENTITY(1,1) not null,
 	id_rol smallint not null,
 	usua_asig_rol char(15) not null,
