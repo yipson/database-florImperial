@@ -63,6 +63,43 @@ ALTER TABLE persPersona
 ADD CONSTRAINT FK_PersPersona_UbicPais
 FOREIGN KEY (id_pais_nacim) REFERENCES ubicPais(id_pais);
 
+ALTER TABLE persPersona
+ADD CONSTRAINT FK_persPersona_persEmail
+FOREIGN KEY (id_email) REFERENCES persEmail (id_email);
+
+ALTER TABLE persPersona
+ADD CONSTRAINT FK_persPersona_persUbicacion
+FOREIGN KEY (id_ubicacion) REFERENCES persUbicacion (id_pers_ubicacion);
+
+ALTER TABLE persPersona
+ADD CONSTRAINT persPersona_persContacto
+FOREIGN KEY(id_num_contacto) REFERENCES persContacto (id_contacto);
+
+
+
+-- persUbicacion
+
+ALTER TABLE persUbicacion
+ADD CONSTRAINT FK_persUbicacion_ubicPais
+FOREIGN KEY (id_pais_nacim) REFERENCES ubicPais(id_pais);
+
+ALTER TABLE persUbicacion
+ADD CONSTRAINT FK_persUbicacion_ubiCiudad
+FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad);
+
+
+
+-- persRelTipPers
+
+ALTER TABLE persRelTipPers
+ADD CONSTRAINT FK_persRelTipPers_persPersona_01
+FOREIGN KEY (pers_id) REFERENCES persPersona(pers_id);
+
+
+ALTER TABLE persRelTipPers
+ADD CONSTRAINT FK_persRelTipPers_persTipPers_01
+FOREIGN KEY (id_tip_pers) REFERENCES persTipPers(id_tip_pers);
+
 
 
 
@@ -110,6 +147,123 @@ FOREIGN KEY (id_tip_novedad) REFERENCES nomiTipoNovedad(id_tip_novedad);
 ALTER TABLE nomiNovNomina
 ADD CONSTRAINT FK_nomiNovNomina_NomiPeriodo
 FOREIGN KEY (id_periodo) REFERENCES nomiPeriodo(id_periodo);
+
+ALTER TABLE nomiNovNomina
+ADD CONSTRAINT FK_nomiNovNomina_nomiParamNomina
+FOREIGN KEY (cod_uni_emp) REFERENCES nomiParamNomina(cod_uni_emp);
+
+
+
+-- nomiParamNomina 
+
+ALTER TABLE nomiParamNomina
+ADD CONSTRAINT FK_NomiParamNomina_NomiListAFP
+FOREIGN KEY (id_afp) REFERENCES nomiListAFP (id_afp);
+
+ALTER TABLE nomiParamNomina
+ADD CONSTRAINT FK_NomiParamNomina_NomiListEps
+FOREIGN KEY (id_eps) REFERENCES nomiListEps (id_eps);
+
+ALTER TABLE nomiParamNomina
+ADD CONSTRAINT FK_NomiParamNomina_PersPersona
+FOREIGN KEY (pers_id) REFERENCES persPersona(pers_id);
+
+
+
+-- nomiPagoNom
+
+ALTER TABLE nomiPagoNom
+ADD CONSTRAINT FK_NomiPagoNom_NomiParamNomina
+FOREIGN KEY(cod_uni_emp) REFERENCES nomiParamNomina(cod_uni_emp);
+
+ALTER TABLE nomiPagoNom
+ADD CONSTRAINT FK_NomiPagoNom_NomiPeriodos
+FOREIGN KEY(id_periodo) REFERENCES nomiPeriodo(id_periodo);
+
+
+
+
+-- PRODUCTO ---------------------------------------------------
+
+
+-- prodCaracteristicas
+
+ALTER TABLE prodCaracteristica
+ADD CONSTRAINT FK_ProdCaracter_ProdProducto
+FOREIGN KEY(id_producto) REFERENCES prodProducto(id_producto);
+
+
+
+-- prodProducto
+
+ALTER TABLE prodProducto
+ADD CONSTRAINT FK_ProdProducto_PersPersona
+FOREIGN KEY(id_proveedor) REFERENCES persPersona(pers_id);
+
+
+
+-- prodStockProducto
+
+ALTER TABLE prodStockProducto
+ADD CONSTRAINT FK_ProdStockProducto_ProdProducto
+FOREIGN KEY(id_producto) REFERENCES prodProducto(id_producto);
+
+ALTER TABLE prodStockProducto
+ADD CONSTRAINT FK_ProdStockProducto_UbicSede
+FOREIGN KEY(id_sede) REFERENCES ubicSede(id_sede);
+
+
+
+-- prodMovimiento
+
+ALTER TABLE prodMovimiento
+ADD CONSTRAINT FK_ProdMovimiento_ProdProduct
+FOREIGN KEY(id_producto) REFERENCES prodProducto(id_producto);
+
+ALTER TABLE prodMovimiento
+ADD CONSTRAINT FK_ProdMovimiento_UserUseaPer
+FOREIGN KEY(user_mov) REFERENCES userUsuaPer(id_user);
+
+ALTER TABLE prodMovimiento
+ADD CONSTRAINT FK_ProdMovimiento_UbicSede
+FOREIGN KEY(sede_mov) REFERENCES ubicSede(id_sede);
+
+
+
+-- VENTAS -------------------------------------------------------
+
+
+-- vtasFactVenta
+
+ALTER TABLE vtasFactVenta
+ADD CONSTRAINT FK_VtasFactVent_VtasEstadoFact
+FOREIGN KEY(estado_fact) REFERENCES vtasEstadoFact(id_estado_fact);
+
+ALTER TABLE vtasFactVenta
+ADD CONSTRAINT FK_VtasFactVent_persPersona
+FOREIGN KEY(id_cliente) REFERENCES persPersona(pers_id);
+
+ALTER TABLE vtasFactVenta
+ADD CONSTRAINT FK_VtasFactVent_UserUsuaPers
+FOREIGN KEY(user_fact) REFERENCES userUsuaPer(id_user);
+
+ALTER TABLE vtasFactVenta
+ADD CONSTRAINT FK_VtasFactVent_UserUsuaPers02
+FOREIGN KEY(user_mod) REFERENCES userUsuaPer(id_user);
+
+
+
+-- vtasDetallTransacc
+
+ALTER TABLE vtasDetallTransacc
+ADD CONSTRAINT FK_VtasDetallTr_UserUsuaPer
+FOREIGN KEY(user_carga_prod) REFERENCES userUsuaPer(id_user);
+
+ALTER TABLE vtasDetallTransacc
+ADD CONSTRAINT FK_VtasDetallTr_VtasFactVen
+FOREIGN KEY(id_transaccion) REFERENCES vtasFactVenta(id_transaccion);
+
+
 
 
 

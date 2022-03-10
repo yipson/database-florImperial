@@ -55,18 +55,14 @@ CREATE TABLE persPersona (
 	seg_nombre varchar(25),
 	pri_apell varchar(25) not null,
 	seg_apell varchar(25),
-	email_pri varchar(80) not null,
-	email_seg varchar(80),
-	direcc_resid varchar(80) not null,
-	id_ciudad char(5) not null,
-	tel_movil char(15) not null,
-	tel_fijo char(12) not null,
+	id_email bigint bigint not null,
+	id_ubicacion bigint not null,
+	id_num_contacto bigint not null,
 	id_genero char(1) not null,
 	fech_nacim date not null,
 	id_tip_persona char(1) not null,
 	razon_social varchar(80),
 	id_tipo_rh tinyint,
-	id_pais_nacim char(3) not null,
 	id_tip_nat_pers char(1),
 	usua_crea char(15) not null,
 	fech_crea date not null,
@@ -105,6 +101,47 @@ CREATE TABLE persTipoDoc (
 	desc_tip_doc char(25) not null,
 	ind_tip_act char(1) not null,
 	CONSTRAINT PK_PersTipoDoc PRIMARY KEY(id_tip_doc)
+);
+
+
+CREATE TABLE persRelTipPers(
+	pers_id int not null,
+	id_tip_pers varchar(8) not null,
+	ind_act_rel varchar (8) not null,
+	CONSTRAINT PK_PersRelTipPers(pers_id, id_tip_pers)
+);
+
+
+CREATE TABLE persTipPers(
+	id_tip_pers varchar(8) not null,
+	desc_tip_pers varchar(8) not null,
+	ind_act_tip_pers varchar (8) not null,
+	CONSTRAINT pk_persTipPers PRIMARY KEY (id_tip_pers)	
+);
+
+
+CREATE TABLE persEmail (
+	id_email bigint IDENTITY(1,1) not null,
+	email_pri varchar(80) UNIQUE not null,
+	email_seg varchar(80),
+	CONSTRAINT PK_persEmail PRIMARY KEY (id_email)
+);
+
+
+CREATE TABLE persUbicacion (
+	bigint IDENTITY(1,1) not null,
+	id_ciudad char(5) not null,
+	direccion_resid varchar(80) not null,
+	id_pais_nacim char(3) not null,
+	CONSTRAINT PK_persUbicacion PRIMARY KEY (id_pers_ubicacion)
+);
+
+
+CREATE TABLE persContacto (
+	id_contacto bigint IDENTITY not null,
+	tel_movil char(15) UNIQUE not null,
+	tel_fijo char(12) not null,
+	CONSTRAINT PK_persContacto PRIMARY KEY (id_contacto)
 );
 
 
@@ -185,11 +222,147 @@ CREATE TABLE nomiNovNomina (
 );
 
 
+create table nomiParamNomina (
+	cod_uni_emp int IDENTITY(1,1) not null,
+	pers_id int not null,
+	id_eps smallint not null,
+	id_afp smallint not null,
+	sal_ant int not null,
+	sal_act int not null,
+	cen_cost char(16) not null,
+	fech_ingr date not null,
+	fech_egre date not null,
+	dias_vac_acum smallint not null,
+	CONSTRAINT PK_NomiParamNomina PRIMARY KEY (cod_uni_emp)   
+);
+
+
+CREATE TABLE nomiListEps(
+	id_eps smallint IDENTITY(1,1) not null,
+	nit_eps char(15) not null,
+	desc_eps char(25) not null,
+	ind_act_eps char(1) not null,
+	CONSTRAINT PK_NomiListEps PRIMARY KEY (id_eps)	
+);
 
 
 
+CREATE TABLE nomiListAFP(
+	id_afp smallint IDENTITY(1,1) not null,
+	nit_afp char(15) not null,
+	desc_afp char(25) not null,
+	ind_act_afp char(1) not null,
+	CONSTRAINT PK_NomiListAFP PRIMARY KEY (id_afp)	
+);
 
 
+CREATE TABLE nomiPagoNom(
+	id_reg_pago int IDENTITY(1,1) not null,
+	id_periodo int not null,
+	cod_uni_emp int not null,
+	val_desc_eps_empl float(8) not null,
+	val_pago_eps_empr float(8) not null,
+	val_desc_afp_empl float(8) not null,
+	val_pago_afp_empr float(8) not null,
+	val_pago_caj_comp float(8) not null,
+	val_desc_sena float(8) not null,
+	val_desc_icbf float(8) not null,
+	val_desc_fon_sol float(8) not null,
+	porcent_rtefte numeric(2,1) not null,
+	val_desc_rtefte float(8) not null,
+	val_Sub_trans float(8) not null,
+	val_tot_novedad float(8) not null,
+	fech_pago timestamp,
+	CONSTRAINT PK_NomiPagoNom PRIMARY KEY (id_reg_pago)	
+);
+
+
+
+-- PRODUCTO --------------------------------------------------
+
+
+CREATE TABLE prodCaracteristica(
+	id_prod_caract int IDENTITY(1,1) not null,
+	id_producto int not null,
+	diametro_tallo numeric(8,2) not null,
+	diametro_flor numeric(8,2) not null,
+	largo_tallo numeric(8,2) not null,
+	color char(8),
+	ind_caracter_act char(1) not null,
+	CONSTRAINT PK_ProdCaracteristica PRIMARY KEY(id_prod_caract)
+);
+
+
+CREATE TABLE prodProducto(
+	id_producto int IDENTITY(1,1) not null,
+	cod_interno char(6) not null,
+	id_proveedor int not null,
+	desc_producto varchar(50) not null,
+	unidad_medida char(4) not null,
+	ind_act_prod char(1) not null,
+	CONSTRAINT PK_ProdProductos PRIMARY KEY (id_producto)
+);
+
+
+CREATE TABLE prodMovimiento(
+	id_traza_mov numeric(8,2) not null,
+	num_doc_mov char(25) not null,
+	tipo_movimiento char(25) not null,
+	id_producto int not null,
+	user_mov int not null,
+	fech_mov date not null,
+	sede_mov int not null,
+	CONSTRAINT PK_ProdMovimiento PRIMARY KEY(id_traza_mov)	
+);
+
+
+
+CREATE TABLE prodStockProducto(
+	id_producto int not null,
+	id_sede int not null,
+	stock_actual numeric(8,2) not null,
+	stock_anterior numeric(8,2) not null,
+	CONSTRAINT PK_ProdStockProducto PRIMARY KEY(id_producto, id_sede)
+);
+
+
+
+-- VENTAS --------------------------------------------------------
+
+CREATE TABLE vtasEstadoFact(
+	id_estado_fact smallint IDENTITY(1,1) not null,
+	desc_estado char(20) not null,
+	ind_est_fact char(1) not null,
+	CONSTRAINT PK_VtasEstadoFact PRIMARY KEY (id_estado_fact)
+);
+
+
+CREATE TABLE vtasDetallTransacc(
+	id_transaccion int IDENTITY(1,1) not null,
+	id_producto INT not null,
+	valuni_prod_trx bigint not null,
+	cantidad_prod int not null,
+	fech_carga_prod timestamp not null,
+	user_carga_prod int not null,
+	CONSTRAINT PK_VtasDetallTransacc PRIMARY KEY(id_transaccion)
+);
+
+
+CREATE TABLE vtasFactVenta(
+	id_transaccion int IDENTITY(1,1) not null,
+	num_fact char(25) not null,
+	id_cliente int not null,
+	valor_neto bigint  not null,
+	valor_iva bigint not null,
+	valor_rtefte bigint not null,
+	fech_fact timestamp not null,
+	user_fact int not null,
+	estado_fact smallint not null,
+	fech_mod date,
+	user_mod int not null,
+	fech_contabil date,
+	CONSTRAINT pk_vtasfactvent_01 PRIMARY KEY (id_transaccion)
+);
 
 
 
