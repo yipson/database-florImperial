@@ -40,6 +40,10 @@ FOREIGN KEY (id_user) REFERENCES userAsoRol(id_user);
 -- persPersona
 
 ALTER TABLE persPersona
+ADD CONSTRAINT FK_persPersona_persEmpresa
+FOREIGN KEY (id_empresa) REFERENCES persEmpresa(id_empresa);
+
+ALTER TABLE persPersona
 ADD CONSTRAINT FK_PersPersona_PersGenero
 FOREIGN KEY (id_genero) REFERENCES persGenero(id_genero);
 
