@@ -81,6 +81,14 @@ FOREIGN KEY(id_num_contacto) REFERENCES persContacto (id_contacto);
 
 
 
+-- persEmpresa
+
+ALTER TABLE persEmpresa
+ADD CONSTRAINT FK_persEmpresa_ubicCiudad
+FOREIGN KEY (id_ciudad) REFERENCES ubicCiudad(id_ciudad);
+
+
+
 -- persUbicacion
 
 ALTER TABLE persUbicacion
