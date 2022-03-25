@@ -61,7 +61,7 @@ CREATE TABLE persPersona (
 	id_genero char(1) not null,
 	fech_nacim date not null,
 	id_tip_persona char(1) not null,
-	razon_social varchar(80),
+	id_empresa int,
 	id_tipo_rh tinyint,
 	id_tip_nat_pers char(1),
 	usua_crea char(15) not null,
@@ -70,6 +70,18 @@ CREATE TABLE persPersona (
 	fec_mod date,
 	pers_act char(1) not null,
 	CONSTRAINT PK_PersPersona PRIMARY KEY(pers_id)
+);
+
+
+CREATE TABLE persEmpresa (
+	id_empresa int IDENTITY(1,1) not null,
+	nit varchar(50) not null,
+	razon_social varchar(50) not null,
+	direccion varchar(60) not null,
+	id_ciudad char(5) not null,
+	email varchar(60) not null,
+	telefono varchar(15) not null,
+	CONSTRAINT PK_persEmpresa PRIMARY KEY(id_empresa)
 );
 
 
