@@ -32,7 +32,7 @@ CREATE TABLE userUsuaRol (
 
 CREATE TABLE userUsuaPer (
 	id_user bigint IDENTITY(1,1) not null,
-	pass varchar(20) not null,
+	pass varchar(80) not null,
 	pers_id int not null,
 	fech_camb_pass date,
 	user_crea char(15) not null,
