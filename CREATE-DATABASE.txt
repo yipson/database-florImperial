@@ -194,7 +194,7 @@ CREATE TABLE ubicTipoSede (
 
 
 CREATE TABLE ubicSede (
-	id_sede char(3) not null,
+	id_sede int IDENTITY(1,1) not null,
 	nom_sede char(50) not null,
 	direc_sede varchar(20) not null,
 	tel_sede char(15) not null,
