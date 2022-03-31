@@ -233,7 +233,7 @@ ADD CONSTRAINT FK_ProdMovimiento_ProdProduct
 FOREIGN KEY(id_producto) REFERENCES prodProducto(id_producto);
 
 ALTER TABLE prodMovimiento
-ADD CONSTRAINT FK_ProdMovimiento_UserUseaPer
+ADD CONSTRAINT FK_ProdMovimiento_UserUsuaPer
 FOREIGN KEY(user_mov) REFERENCES userUsuaPer(id_user);
 
 ALTER TABLE prodMovimiento
