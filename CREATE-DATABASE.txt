@@ -31,7 +31,7 @@ CREATE TABLE userUsuaRol (
 
 
 CREATE TABLE userUsuaPer (
-	id_user bigint IDENTITY(1,1) not null,
+	id_user bigint not null,
 	pass varchar(80) not null,
 	pers_id int not null,
 	fech_camb_pass date,
