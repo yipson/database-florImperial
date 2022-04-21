@@ -367,7 +367,7 @@ CREATE TABLE vtasFactVenta(
 	valor_neto bigint  not null,
 	valor_iva bigint not null,
 	valor_rtefte bigint not null,
-	fech_fact timestamp not null,
+	fech_fact date not null,
 	user_fact int not null,
 	estado_fact smallint not null,
 	fech_mod date,
