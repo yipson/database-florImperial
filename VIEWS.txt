@@ -1,0 +1,64 @@
+/* VISTA PARA VALIDAR LA RELACION COMERCIAL DE FLORES IMPERIAL
+ CON SUS CLIENTES */
+
+CREATE VIEW Vw_relacionClientes AS
+SELECT	PP.pers_id AS 'ID PERSONA',
+		PTD.desc_tip_doc AS 'TIPO IDENTIFICACION',
+		PP.numdoc_persona AS 'IDENTIFICACION',
+		(PP.pri_nombre + ' ' + PP.seg_nombre + ' ' + PP.pri_apell + ' ' + PP.seg_apell) AS 'NOMBRE',
+		(SUBSTRING(PP.pri_nombre,1,1) + SUBSTRING(PP.seg_nombre,1,1) + SUBSTRING(PP.pri_apell,1,1)+ SUBSTRING(PP.seg_apell,1,1)) AS 'INICIALES NOMBRE',
+		PN.desc_tipo_pers AS 'TIPO PERSONA',
+		PU.direccion_resid  AS 'UBICACION',
+		PG.desc_genero AS 'GENERO',
+		UC.desc_ciudad AS 'CIUDAD',
+		UD.desc_depto AS 'DEPARTAMENTO',
+		UP.desc_pais AS 'PAIS',
+		sum(FV.valor_neto) AS 'TOTAL COMPRAS',
+		(SELECT sum(FV.valor_neto)
+		FROM vtasFactVenta FV
+		WHERE fech_fact BETWEEN DATEADD(yy, -5, GETDATE()) AND DATEADD(yy, -4, GETDATE())
+		AND PP.pers_id = FV.id_cliente) AS 'VENTAS 5 ANIOS ATRAS',
+		(SELECT sum(FV.valor_neto)
+		FROM vtasFactVenta FV
+		WHERE fech_fact BETWEEN DATEADD(yy, -4, GETDATE()) AND DATEADD(yy, -3, GETDATE())
+		AND PP.pers_id = FV.id_cliente) AS 'VENTAS 4 ANIOS ATRAS',
+		(SELECT sum(FV.valor_neto)
+		FROM vtasFactVenta FV
+		WHERE fech_fact BETWEEN DATEADD(yy, -3, GETDATE()) AND DATEADD(yy, -2, GETDATE())
+		AND PP.pers_id = FV.id_cliente) AS 'VENTAS 3 ANIOS ATRAS',
+		(SELECT sum(FV.valor_neto)
+		FROM vtasFactVenta FV
+		WHERE fech_fact BETWEEN DATEADD(yy, -2, GETDATE()) AND DATEADD(yy, -1, GETDATE())
+		AND PP.pers_id = FV.id_cliente) AS 'VENTAS 2 ANIOS ATRAS',
+		(SELECT sum(FV.valor_neto)
+		FROM vtasFactVenta FV
+		WHERE fech_fact BETWEEN DATEADD(yy, -1, GETDATE()) AND GETDATE()
+		AND PP.pers_id = FV.id_cliente) AS 'VENTAS 1 ANIO ATRAS',
+		COUNT(FV.id_transaccion) AS 'CANTIDAD FACTURAS',
+		sum(FV.valor_rtefte) AS 'TOTAL Rte FUENTE'
+FROM persPersona PP, 
+	persTipPers PTP, 
+	persRelTipPers PRT,
+	persTipoDoc PTD,
+	persNatPers PN,
+	persUbicacion PU,
+	ubicCiudad UC,
+	ubicDepto UD,
+	ubicPais UP,
+	persGenero PG,
+	vtasFactVenta FV
+WHERE PRT.id_tip_pers = PTP.id_tip_pers
+AND	PP.pers_id = PRT.pers_id
+AND PP.id_tip_doc = PTD.id_tip_doc
+AND PP.id_tip_nat_pers = PN.id_tip_nat_pers
+AND PP.id_ubicacion = PU.id_pers_ubicacion
+AND PU.id_ciudad = UC.id_ciudad
+AND UC.id_depto = UD.id_depto
+AND UD.id_pais = UP.id_pais
+AND PP.id_genero = PG.id_genero
+AND PP.pers_id = FV.id_cliente
+GROUP BY
+PP.pers_id, PTD.desc_tip_doc, PP.numdoc_persona,
+PP.pri_nombre, PP.seg_nombre, PP.pri_apell, PP.seg_apell,
+PN.desc_tipo_pers, PU.direccion_resid, PG.desc_genero,
+UC.desc_ciudad, UD.desc_depto, UP.desc_pais
